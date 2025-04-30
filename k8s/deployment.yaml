@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoaim-web
+  labels:
+    app: whoaim-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: whoaim-web
+  template:
+    metadata:
+      labels:
+        app: whoaim-web
+    spec:
+      initContainers:
+      - name: git-clone
+        image: alpine/git
+        command:
+          - sh
+          - -c
+          - |
+            git clone https://github.com/your-repo/your-web-project.git /git-data
+        volumeMounts:
+          - name: web-content
+            mountPath: /git-data
+      containers:
+      - name: whoaim-web
+        image: nginx:stable-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: web-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: web-content
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoaim-web-service
+spec:
+  selector:
+    app: whoaim-web
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP
