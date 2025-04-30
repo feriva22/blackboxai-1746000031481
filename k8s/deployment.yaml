@@ -5,7 +5,7 @@ metadata:
   labels:
     app: whoaim-web
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: whoaim-web
@@ -21,7 +21,7 @@ spec:
           - sh
           - -c
           - |
-            git clone https://github.com/your-repo/your-web-project.git /git-data
+            git clone https://github.com/feriva22/whoaim.git /git-data
         volumeMounts:
           - name: web-content
             mountPath: /git-data
