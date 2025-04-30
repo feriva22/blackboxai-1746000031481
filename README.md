@@ -1,6 +1,3 @@
-
-Built by https://www.blackbox.ai
-
 ---
 
 # Ferico - DevOps Engineer & Software Developer
